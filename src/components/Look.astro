@@ -1,0 +1,85 @@
+---
+import Arrow from './Arrow.astro';
+import EditorialPhoto from './EditorialPhoto.astro';
+
+interface Props {
+  number: '01' | '02';
+  title: string[];
+  description: string;
+  photo: string;
+  alt: string;
+  detailPhoto: string;
+  detailAlt: string;
+  details: string[];
+}
+const { number, title, description, photo, alt, detailPhoto, detailAlt, details } = Astro.props;
+const id = 'look-' + number;
+---
+<article class:list={['look', { reversed: number === '02' }]} aria-labelledby={id + '-heading'}>
+  <EditorialPhoto photo={photo} alt={alt} />
+  <div class="look-copy">
+    <div>
+      <p class="eyebrow">Образ / {number}</p>
+      <h3 id={id + '-heading'}>{title.map(line => <span>{line}</span>)}</h3>
+      <p class="description">{description}</p>
+    </div>
+    <div class="look-action">
+      <button type="button" data-dialog-open={id} aria-haspopup="dialog" aria-label={'В образе — образ ' + number}>
+        В образе <Arrow />
+      </button>
+    </div>
+  </div>
+  <dialog id={id} data-panel aria-labelledby={id + '-title'}>
+    <div class="panel">
+      <header class="panel-header">
+        <h2 id={id + '-title'}>Образ {number}</h2>
+        <button type="button" class="close" data-dialog-close aria-label="Закрыть панель" autofocus>×</button>
+      </header>
+      <div data-look-list>
+        <p class="status">Состав образа уточняется.</p>
+        <ul aria-label="Детали на фотографии">
+          {details.map(detail => <li>{detail}</li>)}
+        </ul>
+        <button type="button" class="pill" data-look-detail>Быстрый просмотр <Arrow /></button>
+      </div>
+      <div class="quick-view" data-look-view hidden>
+        <h3 tabindex="-1">Быстрый просмотр</h3>
+        <EditorialPhoto photo={detailPhoto} alt={detailAlt} />
+        <button type="button" class="back" data-look-back><span aria-hidden="true">←</span> К образу</button>
+      </div>
+    </div>
+  </dialog>
+</article>
+
+<style>
+  .look { display: grid; background: var(--look); }
+  .look-copy { display: flex; flex-direction: column; justify-content: space-between; gap: 34px; padding: clamp(32px, 7vw, 76px) var(--gutter); min-width: 0; }
+  .look-copy h3 { margin-block: .42em .33em; font-size: clamp(2rem, 9.5vw, 3.15rem); line-height: .99; letter-spacing: -.058em; font-weight: 430; }
+  .look-copy h3 span { display: block; }
+  .description, .status { color: var(--muted); max-width: 34ch; }
+  .look-action button { width: 100%; padding: 14px 0; min-height: 49px; border: 0; border-block: 1px solid var(--rule); background: transparent; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; }
+  .look-action button:hover, .back:hover { color: var(--color-accent-hishat); }
+  dialog { width: min(100%, 560px); max-width: 100%; max-height: 88dvh; margin: auto auto 0; padding: 0; background: var(--header); color: var(--ink); border: 0; border-radius: 18px 18px 0 0; overscroll-behavior: contain; }
+  dialog::backdrop { background: #1c1c1a66; }
+  .panel { padding: clamp(20px, 5vw, 44px); }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .panel-header h2 { font-size: clamp(1.75rem, 5vw, 2.5rem); line-height: 1.03; letter-spacing: -.05em; font-weight: 480; }
+  .close, .back { background: transparent; border: 0; min-height: 44px; padding: 0 8px; }
+  .close { min-width: 44px; font-size: 1.65rem; }
+  .back { padding-inline: 0; }
+  ul { list-style: none; padding: 0; margin: 22px 0; border-top: 1px solid var(--rule); }
+  li { padding: 13px 0; border-bottom: 1px solid var(--rule); }
+  .pill { gap: 12px; width: 100%; }
+  .quick-view { display: grid; gap: 16px; justify-items: start; }
+  .quick-view :global(figure) { width: 100%; aspect-ratio: 4 / 3; }
+  .quick-view h3 { font-weight: 500; }
+  @media (min-width: 960px) {
+    .look { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); min-height: clamp(620px, 67vw, 1120px); }
+    .reversed { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+    .reversed .look-copy { grid-column: 1; grid-row: 1; }
+    .reversed > :global(figure) { grid-column: 2; grid-row: 1; }
+    .look-copy { padding: clamp(54px, 6vw, 110px) clamp(32px, 3.2vw, 70px); }
+    .look-copy h3 { font-size: clamp(2.2rem, 4.4vw, 6rem); }
+    dialog { height: 100dvh; max-height: 100dvh; margin: 0 0 0 auto; border-radius: 0; }
+  }
+</style>

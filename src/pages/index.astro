@@ -1,0 +1,105 @@
+---
+import Arrow from '../components/Arrow.astro';
+import Header from '../components/Header.astro';
+import EditorialPhoto from '../components/EditorialPhoto.astro';
+import Look from '../components/Look.astro';
+import '../styles/site.css';
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#f5f3ef" />
+    <title>HOVAN — Первая капсула KAMI</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#content">Перейти к содержанию</a>
+    <Header />
+    <main id="content">
+      <section class="hero-chapter" aria-labelledby="hero-title">
+        <EditorialPhoto photo="hero" alt="Модель в чёрном с узорным кушаком" eager />
+        <div class="hero-copy">
+          <p class="eyebrow">HOVAN / KAMI — первая капсула</p>
+          <h1 id="hero-title">Первая<br />капсула</h1>
+          <p class="hero-lead">Современная одежда, в которой память становится частью формы.</p>
+          <div class="hero-actions">
+            <a class="pill" href="#kami">Смотреть коллекцию</a>
+            <span aria-disabled="true">История HOVAN <Arrow /></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="kami" class="kami-chapter" aria-labelledby="kami-title">
+        <div class="kami-copy">
+          <div>
+            <p class="eyebrow">Коллекция / 01</p>
+            <h2 id="kami-title">KAMI</h2>
+          </div>
+          <div class="kami-lead">
+            <p class="kami-statement">Несколько<br />состояний.</p>
+            <p>Первая капсула HOVAN — о движении, сочетаниях и разных состояниях одной женщины.</p>
+          </div>
+        </div>
+        <EditorialPhoto photo="kami" alt="Молочная блуза с объёмными рукавами, вид со спины" />
+      </section>
+
+      <section id="looks" aria-label="Образы KAMI">
+        <Look
+          number="01"
+          title={['Чёрный.', 'Молочный.', 'Движение.']}
+          description="Сдержанный силуэт, выразительная линия, спокойный контраст."
+          photo="movement"
+          alt="Светлая блуза и тёмная юбка в движении"
+          detailPhoto="movement"
+          detailAlt="Сочетание светлой блузы и тёмной юбки"
+          details={['Светлая блуза', 'Тёмная юбка']}
+        />
+        <Look
+          number="02"
+          title={['Деталь,', 'которая', 'меняет', 'всё.']}
+          description="Кушак становится ярким акцентом в современной капсуле."
+          photo="sash"
+          alt="Тёмный образ с узорным кушаком"
+          detailPhoto="detail"
+          detailAlt="Орнамент кушака крупным планом"
+          details={['Тёмный силуэт', 'Узорный кушак']}
+        />
+      </section>
+    </main>
+    <script>
+      import '../panels';
+    </script>
+  </body>
+</html>
+
+<style>
+  .hero-chapter, .kami-chapter { display: grid; }
+  .hero-copy { min-width: 0; padding: 29px var(--gutter) 38px; }
+  h1 { font-size: clamp(3.15rem, 13vw, 5.1rem); line-height: .95; font-weight: 450; letter-spacing: -.075em; margin: .3em 0 .32em; }
+  .hero-lead { max-width: 31ch; line-height: 1.24; font-size: clamp(1rem, 4.3vw, 1.375rem); }
+  .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px clamp(13px, 4vw, 28px); margin-top: 24px; }
+  .hero-actions > span { color: var(--muted); font-size: .82rem; }
+  .hero-actions > span :global(svg) { margin-left: 5px; }
+  .kami-chapter { background: var(--collection); }
+  .kami-copy { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; gap: clamp(34px, 7vw, 86px); padding: clamp(52px, 12vw, 100px) var(--gutter); }
+  .kami-copy h2 { margin-top: .07em; font-size: clamp(5rem, 31vw, 13rem); line-height: .92; letter-spacing: -.095em; font-weight: 475; }
+  .kami-lead { max-width: 34ch; }
+  .kami-statement { font-size: clamp(2.35rem, 10vw, 4rem); font-weight: 430; letter-spacing: -.065em; line-height: .99; margin-bottom: 20px; }
+  @media (min-width: 960px) {
+    .hero-chapter, .kami-chapter { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); }
+    .hero-chapter { min-height: clamp(660px, 60vw, 1040px); }
+    .hero-copy { grid-column: 1; grid-row: 1; align-self: end; padding-block: 48px clamp(56px, 6vw, 110px); }
+    .hero-chapter > :global(figure) { grid-column: 2; grid-row: 1; }
+    h1 { font-size: clamp(4.5rem, 7vw, 8.1rem); }
+    .hero-lead { font-size: clamp(1.25rem, 1.65vw, 1.8rem); }
+    .hero-actions { margin-top: clamp(30px, 3.2vw, 54px); }
+    .kami-chapter { min-height: clamp(660px, 64vw, 1110px); }
+    .kami-copy { padding-block: clamp(70px, 8.5vw, 155px) clamp(60px, 6.5vw, 118px); }
+    .kami-copy h2 { font-size: clamp(7.5rem, 16.4vw, 19rem); }
+    .kami-statement { font-size: clamp(2.55rem, 4.15vw, 5rem); }
+    .kami-lead > p:last-child { font-size: clamp(1rem, 1.32vw, 1.42rem); }
+  }
+</style>

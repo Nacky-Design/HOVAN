@@ -1,0 +1,25 @@
+---
+import '../styles/fonts.css';
+import '../ui-kit/specimen.css';
+import template from '../ui-kit/template.html?raw';
+
+const body = template.split('<body>')[1]?.split('<script>')[0];
+if (!body) throw new Error('Seed UI Kit template has no body.');
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#f5f3ef" />
+    <title>HOVAN — Seed UI Kit / P1a.1</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <Fragment set:html={body} />
+    <script>
+      import '../ui-kit/specimen';
+    </script>
+  </body>
+</html>

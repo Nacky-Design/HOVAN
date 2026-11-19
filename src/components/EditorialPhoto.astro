@@ -1,0 +1,33 @@
+---
+interface Props {
+  photo: string;
+  alt: string;
+  eager?: boolean;
+}
+const { photo, alt, eager = false } = Astro.props;
+const showPhoto = import.meta.env.DEV && Boolean(process.env.HOVAN_LOCAL_PHOTO_ROOT);
+---
+<figure class:list={['photo', photo]} aria-hidden={showPhoto ? undefined : 'true'}>
+  {showPhoto && <img src={'/__p1b-photo/' + photo} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />}
+</figure>
+
+<style>
+  .photo { position: relative; overflow: hidden; background: #e5e2dd; min-width: 0; min-height: 0; }
+  img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 44%; display: block; }
+  .hero { aspect-ratio: 0.85; background: #fefefe; }
+  .hero img { object-position: 50% 44%; }
+  .kami { aspect-ratio: .65; background: #f0f0f0; }
+  .kami img { object-position: 50% 44%; }
+  .movement { aspect-ratio: 1 / 1.11; }
+  .movement img { object-position: 50% 72%; }
+  .sash { aspect-ratio: 1 / 1.13; }
+  .sash img { object-position: 50% 49%; }
+  .detail { aspect-ratio: 4 / 3; }
+  @media (min-width: 960px) {
+    .hero, .kami, .movement, .sash { aspect-ratio: auto; }
+    .hero img { object-fit: contain; object-position: center bottom; }
+    .kami img { object-position: 50% 40%; }
+    .movement img { object-position: 50% 73%; }
+    .sash img { object-position: 50% 50%; }
+  }
+</style>

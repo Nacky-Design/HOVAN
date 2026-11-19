@@ -1,0 +1,33 @@
+@import './fonts.css';
+
+:root {
+  color-scheme: light;
+  --paper: #f5f3ef;
+  --header: #f8f7f3;
+  --collection: #eae7e1;
+  --look: #efede9;
+  --ink: #1c1c1a;
+  --muted: #65625d;
+  --rule: #d6d1c9;
+  --color-accent-hishat: #642f38;
+  --font-body: 'Hovan Inter', 'Hovan Armenian', Arial, sans-serif;
+  --gutter: clamp(20px, 4.45vw, 96px);
+  --header-height: 60px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-height); }
+html:has(dialog[open]) { overflow: hidden; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.5 var(--font-body); }
+a { color: inherit; }
+button { color: inherit; font: inherit; cursor: pointer; }
+h1, h2, h3, p, figure { margin: 0; }
+:focus-visible { outline: 2px solid var(--color-accent-hishat); outline-offset: 5px; }
+[hidden] { display: none !important; }
+.eyebrow { color: var(--color-accent-hishat); font-size: .72rem; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
+.skip-link { position: fixed; z-index: 5; inset: 8px auto auto 8px; padding: 12px; background: var(--ink); color: white; transform: translateY(-150%); }
+.skip-link:focus { transform: none; }
+.pill { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 22px; border: 1px solid var(--ink); border-radius: 100px; background: var(--ink); color: white; text-decoration: none; font-size: .875rem; }
+.pill:hover { background: #373532; }
+@media (min-width: 960px) { :root { --header-height: clamp(68px, 5.4vw, 88px); } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
