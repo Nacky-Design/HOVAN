@@ -9,7 +9,7 @@ const photos = {
   hero: 'hishat/01_hero-on-black_DSC01550.webp',
   kami: 'shunch/03_back_DSC01598.webp',
   movement: 'alik/01_hero-in-motion_DSC01859.webp',
-  sash: 'hishat/01_hero-on-black_DSC01550.webp',
+  sash: 'hishat/06_macro-textile_DSC01763.webp',
   detail: 'hishat/03_macro-pattern_DSC01566.webp',
   'kit-silhouette': 'shunch/01_hero-front_DSC01569.webp',
   'kit-shunch': 'shunch/02_front_DSC01576.webp',

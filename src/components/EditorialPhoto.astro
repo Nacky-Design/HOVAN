@@ -20,14 +20,14 @@ const showPhoto = import.meta.env.DEV && Boolean(process.env.HOVAN_LOCAL_PHOTO_R
   .kami img { object-position: 50% 44%; }
   .movement { aspect-ratio: 1 / 1.11; }
   .movement img { object-position: 50% 72%; }
-  .sash { aspect-ratio: 1 / 1.13; }
-  .sash img { object-position: 50% 49%; }
+  .sash { aspect-ratio: 1; background: #292522; }
+  .sash img { object-position: 50% 51%; }
   .detail { aspect-ratio: 4 / 3; }
   @media (min-width: 960px) {
     .hero, .kami, .movement, .sash { aspect-ratio: auto; }
-    .hero img { object-fit: contain; object-position: center bottom; }
-    .kami img { object-position: 50% 40%; }
+    .hero img { object-fit: contain; object-position: 53% bottom; }
+    .kami img { object-position: 50% 26%; }
     .movement img { object-position: 50% 73%; }
-    .sash img { object-position: 50% 50%; }
+    .sash img { object-position: 50% 51%; }
   }
 </style>

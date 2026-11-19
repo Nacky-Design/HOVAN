@@ -53,7 +53,8 @@ const id = 'look-' + number;
 
 <style>
   .look { display: grid; background: var(--look); }
-  .look-copy { display: flex; flex-direction: column; justify-content: space-between; gap: 34px; padding: clamp(32px, 7vw, 76px) var(--gutter); min-width: 0; }
+  .reversed { background: #eae3df; }
+  .look-copy { display: flex; flex-direction: column; justify-content: center; gap: clamp(28px, 4vw, 58px); padding: clamp(32px, 7vw, 76px) var(--gutter); min-width: 0; }
   .look-copy h3 { margin-block: .42em .33em; font-size: clamp(2rem, 9.5vw, 3.15rem); line-height: .99; letter-spacing: -.058em; font-weight: 430; }
   .look-copy h3 span { display: block; }
   .description, .status { color: var(--muted); max-width: 34ch; }
@@ -74,11 +75,12 @@ const id = 'look-' + number;
   .quick-view :global(figure) { width: 100%; aspect-ratio: 4 / 3; }
   .quick-view h3 { font-weight: 500; }
   @media (min-width: 960px) {
-    .look { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); min-height: clamp(620px, 67vw, 1120px); }
-    .reversed { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+    .look { grid-template-columns: minmax(0, 61fr) minmax(0, 39fr); min-height: clamp(620px, 63vw, 1060px); }
+    .reversed { grid-template-columns: minmax(0, 39fr) minmax(0, 61fr); min-height: clamp(500px, 52vw, 920px); }
     .reversed .look-copy { grid-column: 1; grid-row: 1; }
     .reversed > :global(figure) { grid-column: 2; grid-row: 1; }
-    .look-copy { padding: clamp(54px, 6vw, 110px) clamp(32px, 3.2vw, 70px); }
+    .look-copy { padding: clamp(54px, 6vw, 110px) var(--gutter); }
+    .look-action { max-width: 24rem; }
     .look-copy h3 { font-size: clamp(2.2rem, 4.4vw, 6rem); }
     dialog { height: 100dvh; max-height: 100dvh; margin: 0 0 0 auto; border-radius: 0; }
   }
