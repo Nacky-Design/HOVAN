@@ -31,3 +31,17 @@ h1, h2, h3, p, figure { margin: 0; }
 .pill:hover { background: #373532; }
 @media (min-width: 960px) { :root { --header-height: clamp(68px, 5.4vw, 88px); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+:root {
+  --chapter-title: clamp(2.25rem, 8.4vw, 4.75rem);
+  --chapter-space: clamp(60px, 11vw, 146px);
+}
+.chapter-title { margin-top: .36em; font-size: var(--chapter-title); line-height: 1; letter-spacing: -.065em; font-weight: 450; }
+.page-gutter { padding-inline: var(--gutter); }
+.muted { color: var(--muted); }
+.text-action { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 0; border: 0; background: transparent; text-align: left; text-decoration: none; font-size: .95rem; }
+.text-action:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 960px) {
+  :root { --chapter-title: clamp(3.1rem, 4.6vw, 5.8rem); }
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

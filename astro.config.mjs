@@ -1,31 +1,35 @@
-import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
-import { isAbsolute, join } from 'node:path';
+import { createReadStream, readFileSync, realpathSync } from 'node:fs';
+import { realpath, stat } from 'node:fs/promises';
+import { isAbsolute, join, sep } from 'node:path';
 import { defineConfig } from 'astro/config';
 
 const photoRoot = process.env.HOVAN_LOCAL_PHOTO_ROOT;
 const hasPhotoRoot = Boolean(photoRoot && isAbsolute(photoRoot));
-const photos = {
-  hero: 'hishat/01_hero-on-black_DSC01550.webp',
-  kami: 'shunch/03_back_DSC01598.webp',
-  movement: 'alik/01_hero-in-motion_DSC01859.webp',
-  sash: 'hishat/06_macro-textile_DSC01763.webp',
-  detail: 'hishat/03_macro-pattern_DSC01566.webp',
-  'kit-silhouette': 'shunch/01_hero-front_DSC01569.webp',
-  'kit-shunch': 'shunch/02_front_DSC01576.webp',
-};
+const photoMap = process.env.HOVAN_LOCAL_PHOTO_MAP;
+
+function loadPhotoMap() {
+  if (!photoMap || !isAbsolute(photoMap)) return {};
+  const source = JSON.parse(readFileSync(photoMap, 'utf8'));
+  const entries = Object.entries(source).filter(([key, path]) =>
+    /^[a-z0-9-]+$/.test(key) &&
+    typeof path === 'string' && /^[a-z0-9_-]+\/[a-z0-9_-]+\.webp$/i.test(path),
+  );
+  return Object.fromEntries(entries);
+}
 
 function privatePhotos() {
   return {
     name: 'hovan-private-photos',
     apply: 'serve',
     configureServer(server) {
+      const photos = loadPhotoMap();
+      const realRoot = hasPhotoRoot ? realpathSync(photoRoot) : null;
       server.middlewares.use(async (request, response, next) => {
         const url = request.url ?? '';
         const host = request.headers.host ?? '';
         const loopbackHost = /^(?:127\.0\.0\.1|localhost):\d+$/.test(host);
         const loopbackPeer = ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress);
-        const localPhotos = hasPhotoRoot && loopbackHost && loopbackPeer;
+        const localPhotos = realRoot && Boolean(photoMap) && loopbackHost && loopbackPeer;
 
         if (url === '/__local-media/manifest') {
           const media = localPhotos ? {
@@ -50,8 +54,9 @@ function privatePhotos() {
           response.writeHead(405, { Allow: 'GET, HEAD' }).end();
           return;
         }
-        const file = join(photoRoot, photos[key]);
-        const info = await stat(file).catch(() => null);
+        const file = await realpath(join(realRoot, photos[key])).catch(() => null);
+        const withinRoot = file?.startsWith(realRoot + sep);
+        const info = withinRoot ? await stat(file).catch(() => null) : null;
         if (!info?.isFile()) {
           response.writeHead(404).end();
           return;

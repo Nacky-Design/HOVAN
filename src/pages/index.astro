@@ -3,10 +3,15 @@ import Arrow from '../components/Arrow.astro';
 import Header from '../components/Header.astro';
 import EditorialPhoto from '../components/EditorialPhoto.astro';
 import Look from '../components/Look.astro';
+import Stories from '../components/Stories.astro';
+import Closing from '../components/Closing.astro';
+import Commerce from '../components/Commerce.astro';
+import Footer from '../components/Footer.astro';
+import { siteLocale } from '../data/locale';
 import '../styles/site.css';
 ---
 <!doctype html>
-<html lang="ru">
+<html lang={siteLocale.default}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,8 +31,8 @@ import '../styles/site.css';
           <h1 id="hero-title">Первая<br />капсула</h1>
           <p class="hero-lead">Современная одежда, в которой память становится частью формы.</p>
           <div class="hero-actions">
-            <a class="pill" href="#kami">Смотреть коллекцию <Arrow /></a>
-            <span aria-disabled="true">История HOVAN <Arrow /></span>
+            <a class="pill" href="#kami">Смотреть коллекцию</a>
+            <a class="story-link text-action" href="#brand">История HOVAN <Arrow /></a>
           </div>
         </div>
       </section>
@@ -51,59 +56,62 @@ import '../styles/site.css';
           number="01"
           title={['Чёрный.', 'Молочный.', 'Движение.']}
           description="Сдержанный силуэт, выразительная линия, спокойный контраст."
-          photo="movement"
-          alt="Светлая блуза и тёмная юбка в движении"
-          detailPhoto="movement"
-          detailAlt="Сочетание светлой блузы и тёмной юбки"
-          details={['Светлая блуза', 'Тёмная юбка']}
+          photo="contrast"
+          alt="Светлые рукава и тёмный верхний слой крупным планом"
+          detailPhoto="contrast"
+          detailAlt="Светлые рукава, тёмная ткань и линия талии"
+          details={['Светлые рукава', 'Тёмный верхний слой']}
         />
         <Look
           number="02"
           title={['Деталь,', 'которая', 'меняет', 'всё.']}
           description="Кушак становится ярким акцентом в современной капсуле."
           photo="sash"
-          alt="Крупный план орнамента HISHAT на чёрной ткани"
+          alt="Тёмный силуэт с узорным кушаком"
           detailPhoto="detail"
           detailAlt="Орнамент кушака крупным планом"
-          details={['Узорный кушак', 'Фактура ткани']}
+          details={['Тёмный силуэт', 'Узорный кушак']}
+          candidate={{ id: 'hishat', label: 'HISHAT в каталоге · привязка уточняется' }}
         />
       </section>
+      <Stories />
+      <Closing />
     </main>
+    <Footer />
+    <Commerce />
+    <span class="visually-hidden" data-demo-status role="status"></span>
     <script>
       import '../panels';
+      import '../gallery';
+      import '../commerce';
+      import '../service';
     </script>
   </body>
 </html>
 
 <style>
   .hero-chapter, .kami-chapter { display: grid; }
-  .hero-copy { min-width: 0; padding: 29px var(--gutter) 38px; }
+  .hero-copy { min-width: 0; padding: 26px var(--gutter) 34px; }
   h1 { font-size: clamp(3.15rem, 13vw, 5.1rem); line-height: .95; font-weight: 450; letter-spacing: -.075em; margin: .3em 0 .32em; }
   .hero-lead { max-width: 31ch; line-height: 1.24; font-size: clamp(1rem, 4.3vw, 1.375rem); }
   .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px clamp(13px, 4vw, 28px); margin-top: 24px; }
-  .hero-actions .pill { gap: 12px; }
-  .hero-actions > span { color: var(--muted); font-size: .82rem; }
-  .hero-actions > span :global(svg) { margin-left: 5px; }
+  .hero-actions .story-link { gap: 7px; font-size: .82rem; }
   .kami-chapter { background: var(--collection); }
-  .kami-copy { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; gap: clamp(32px, 10vw, 70px); padding: clamp(58px, 14vw, 106px) var(--gutter); }
+  .kami-copy { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; gap: clamp(32px, 10vw, 70px); padding: clamp(54px, 15vw, 106px) var(--gutter); }
   .kami-copy h2 { margin-top: .07em; font-size: clamp(5rem, 31vw, 13rem); line-height: .92; letter-spacing: -.095em; font-weight: 475; }
-  .kami-lead { max-width: 34ch; }
+  .kami-lead > p:last-child { max-width: 34ch; }
   .kami-statement { font-size: clamp(2.35rem, 10vw, 4rem); font-weight: 430; letter-spacing: -.065em; line-height: .99; margin-bottom: 20px; }
   @media (min-width: 960px) {
-    .hero-chapter { grid-template-columns: minmax(0, 43fr) minmax(0, 57fr); min-height: clamp(660px, 57vw, 1040px); }
-    .hero-copy { grid-column: 1; grid-row: 1; align-self: end; padding-block: 48px clamp(66px, 7.4vw, 128px); }
+    .hero-chapter, .kami-chapter { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); }
+    .hero-chapter { min-height: clamp(660px, 59.9vw, 1040px); }
+    .hero-copy { grid-column: 1; grid-row: 1; align-self: end; padding-block: 48px clamp(58px, 5.6vw, 105px); }
     .hero-chapter > :global(figure) { grid-column: 2; grid-row: 1; }
     h1 { font-size: clamp(4.5rem, 7vw, 8.1rem); }
     .hero-lead { font-size: clamp(1.25rem, 1.65vw, 1.8rem); }
     .hero-actions { margin-top: clamp(30px, 3.2vw, 54px); }
-    .kami-chapter {
-      grid-template-columns: minmax(0, 49fr) minmax(0, 51fr);
-      min-height: clamp(660px, 62vw, 1100px);
-      padding: clamp(44px, 5.5vw, 106px) var(--gutter);
-    }
-    .kami-copy { padding: clamp(24px, 3.6vw, 76px) var(--gutter) clamp(18px, 2.8vw, 58px) 0; }
-    .kami-copy h2 { font-size: clamp(7.5rem, 16vw, 18.6rem); }
-    .kami-chapter > :global(figure) { justify-self: stretch; }
+    .kami-chapter { min-height: clamp(660px, 63.9vw, 1100px); }
+    .kami-copy { padding-block: clamp(68px, 8vw, 145px) clamp(62px, 6.7vw, 115px); }
+    .kami-copy h2 { font-size: clamp(7.5rem, 16.4vw, 19rem); }
     .kami-statement { font-size: clamp(2.55rem, 4.15vw, 5rem); }
     .kami-lead > p:last-child { font-size: clamp(1rem, 1.32vw, 1.42rem); }
   }

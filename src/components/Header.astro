@@ -1,16 +1,21 @@
 ---
 import Arrow from './Arrow.astro';
+import Heart from './Heart.astro';
+import { siteLocale } from '../data/locale';
+const planned = siteLocale.planned;
 ---
 <header class="header">
   <a class="wordmark" href="#top" aria-label="HOVAN — в начало страницы">HOVAN</a>
   <nav class="desktop-nav" aria-label="Основная навигация">
     <a href="#kami">KAMI</a>
-    <a href="#looks">Коллекция</a>
-    <span aria-disabled="true">О бренде</span>
-    <span aria-disabled="true">Примерка</span>
+    <a href="#catalog">Коллекция</a>
+    <a href="#brand">О бренде</a>
+    <a href="#service">Примерка</a>
   </nav>
   <div class="header-meta">
-    <span class="language" aria-label="Язык сайта — русский">RU <span aria-hidden="true">/</span> <span lang="hy" title="Перевод готовится" aria-disabled="true">Հայ</span></span>
+    <button type="button" class="header-button" data-dialog-open="demo-wish" aria-haspopup="dialog" aria-label="Избранное"><Heart /><span>Избранное</span></button>
+    <button type="button" class="header-button cart" data-dialog-open="demo-cart" aria-haspopup="dialog">Корзина <span data-demo-count="cart">0</span></button>
+    <span class="language desktop-language">RU <span aria-hidden="true">/</span> <span lang={planned.code} title={planned.status}>{planned.label}</span></span>
     <button type="button" class="menu-button" data-dialog-open="menu-dialog" aria-haspopup="dialog">Меню <span aria-hidden="true">☰</span></button>
   </div>
 </header>
@@ -23,10 +28,17 @@ import Arrow from './Arrow.astro';
     <nav aria-label="Меню">
       <a href="#kami" data-dialog-link>Коллекция KAMI <Arrow /></a>
       <a href="#looks" data-dialog-link>Образы <Arrow /></a>
-      <span aria-disabled="true">История HOVAN</span>
-      <span aria-disabled="true">Примерка</span>
+      <a href="#brand" data-dialog-link>История HOVAN <Arrow /></a>
+      <a href="#catalog" data-dialog-link>Все вещи <Arrow /></a>
+      <a href="#hishat" data-dialog-link>HISHAT <Arrow /></a>
+      <a href="#materials" data-dialog-link>Материалы и уход <Arrow /></a>
+      <a href="#service" data-dialog-link>Примерка <Arrow /></a>
     </nav>
-    <p class="language">RU / <span lang="hy">Հայ</span> · Перевод готовится</p>
+    <div class="menu-extras">
+      <button type="button" class="text-action" data-dialog-open="demo-wish" aria-haspopup="dialog"><Heart /> Избранное</button>
+      <button type="button" class="text-action" data-dialog-open="demo-cart" aria-haspopup="dialog">Корзина <span data-demo-count="cart">0</span></button>
+    </div>
+    <p class="language">RU / <span lang={planned.code}>{planned.label}</span> · {planned.status}</p>
   </div>
 </dialog>
 
@@ -34,7 +46,10 @@ import Arrow from './Arrow.astro';
   .header { position: sticky; z-index: 2; top: 0; min-height: var(--header-height); display: flex; align-items: center; justify-content: space-between; padding-inline: var(--gutter); gap: 16px; background: var(--header); }
   .wordmark { font-size: 1.65rem; letter-spacing: -.09em; line-height: 1; font-weight: 500; text-decoration: none; }
   .desktop-nav { display: none; }
-  .header-meta { display: flex; align-items: center; gap: 22px; }
+  .header-meta { display: flex; align-items: center; gap: 10px; }
+  .header-button { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; background: transparent; font-size: .82rem; padding: 0; }
+  .header-button > span, .header-button.cart, .desktop-language { display: none; }
+  .menu-extras { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 18px; }
   .language { color: var(--muted); font-size: .82rem; white-space: nowrap; }
   .menu-button, .close { border: 0; background: transparent; min-height: 44px; }
   .menu-button { display: inline-flex; align-items: center; gap: 8px; font-size: .825rem; text-transform: uppercase; font-weight: 600; }
@@ -46,13 +61,14 @@ import Arrow from './Arrow.astro';
   .close { font-size: 1.75rem; min-width: 44px; }
   .menu-content nav > * { display: flex; justify-content: space-between; gap: 16px; align-items: center; min-height: 52px; border-bottom: 1px solid var(--rule); text-decoration: none; }
   .menu-content .language { margin-top: 24px; }
-  [aria-disabled="true"] { color: var(--muted); }
   @media (min-width: 960px) {
     .header { display: grid; grid-template-columns: 1fr auto 1fr; }
     .desktop-nav { display: flex; align-items: center; gap: clamp(24px, 2.2vw, 44px); font-size: .8rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
     .desktop-nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
     .desktop-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-    .header-meta { justify-self: end; }
+    .header-meta { justify-self: end; gap: 16px; }
+    .header-button > span, .desktop-language { display: inline; }
+    .header-button.cart { display: flex; }
     .menu-button { display: none; }
   }
 </style>

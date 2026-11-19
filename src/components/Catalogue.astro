@@ -1,0 +1,82 @@
+---
+import Arrow from './Arrow.astro';
+import EditorialPhoto from './EditorialPhoto.astro';
+import Heart from './Heart.astro';
+import Panel from './Panel.astro';
+import { products } from '../data/catalog';
+---
+<section id="catalog" class="catalogue page-gutter" data-section aria-labelledby="catalog-title">
+  <div class="catalogue-intro">
+    <div>
+      <p class="eyebrow">KAMI / Капсула 01</p>
+      <h2 id="catalog-title" class="chapter-title">Одна система.</h2>
+    </div>
+    <p>Каждая модель работает самостоятельно, но вместе вещи образуют капсулу. Выберите свою — или начните с готового сочетания.</p>
+  </div>
+  <div class="catalogue-label">
+    <p class="eyebrow">Все вещи коллекции</p>
+    <p class="muted">7 позиций</p>
+  </div>
+  <ul class="catalogue-grid">
+    {products.map(product => (
+      <li class="catalogue-item">
+        <div class="card-media">
+          <EditorialPhoto photo={product.photos[0]?.id ?? 'model-07'} alt={product.photos[0]?.alt ?? ''} missing={!product.photos.length} format="gallery" />
+          {product.photos.length > 0 && <button type="button" class="wish" data-demo-toggle="wish" data-product-id={product.id} aria-label={'Избранное — ' + product.name} aria-pressed="false"><Heart /></button>}
+        </div>
+        <h3>{product.name}</h3>
+        {product.type && <p class="muted">{product.type}</p>}
+        {product.photos.length
+          ? <button type="button" class="text-action" data-dialog-open={'product-' + product.id} aria-haspopup="dialog" aria-label={'Быстрый просмотр — ' + product.name}>Подробнее <Arrow /></button>
+          : <p class="muted">Описание готовится</p>}
+      </li>
+    ))}
+  </ul>
+</section>
+{products.filter(product => product.photos.length).map(product => (
+  <Panel id={'product-' + product.id} title={product.name}>
+    <p class="muted">{product.type} · Фото предварительно сопоставлены с изделием.</p>
+    <div data-gallery>
+      {product.photos.map((image, index) => (
+        <div data-gallery-image hidden={index !== 0}>
+          <EditorialPhoto photo={image.id} alt={image.alt} format="gallery" />
+        </div>
+      ))}
+      <div class="gallery-controls" role="group" aria-label={'Фото ' + product.name}>
+        {product.photos.map((image, index) => (
+          <button type="button" class="gallery-button" data-gallery-index={index} aria-pressed={index === 0}>{image.label}</button>
+        ))}
+      </div>
+    </div>
+    <p class="muted">Размеры, цена и наличие уточняются.</p>
+    <div class="product-actions">
+      <button type="button" class="pill" data-demo-toggle="cart" data-product-id={product.id} aria-pressed="false"><span data-demo-label>В демо-корзину</span></button>
+      <button type="button" class="text-action" data-demo-toggle="wish" data-product-id={product.id} aria-pressed="false"><Heart /><span data-demo-label>В избранное</span></button>
+    </div>
+  </Panel>
+))}
+
+<style>
+  .catalogue { padding-block: var(--chapter-space); }
+  .catalogue-intro { display: grid; gap: 24px; align-items: end; }
+  .catalogue-intro > p { max-width: 40ch; }
+  .catalogue-label { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-block: clamp(32px, 6vw, 70px) 16px; }
+  .catalogue-grid { list-style-type: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 6vw, 78px) clamp(10px, 1.5vw, 22px); margin: 0; padding: 0; }
+  .catalogue-item { min-width: 0; }
+  .card-media { position: relative; }
+  .wish { display: grid; place-items: center; width: 44px; height: 44px; position: absolute; inset: 8px 8px auto auto; background: var(--header); color: var(--ink); border: 0; border-radius: 50%; }
+  [data-demo-toggle="wish"][aria-pressed="true"] { color: var(--color-accent-hishat); }
+  [data-demo-toggle="wish"][aria-pressed="true"] :global(svg) { fill: currentColor; }
+  .product-actions { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 20px; }
+  .catalogue-item h3 { margin-top: 12px; font-size: clamp(.95rem, 2.9vw, 1.15rem); font-weight: 600; overflow-wrap: anywhere; }
+  .catalogue-item p { font-size: .875rem; }
+  [data-gallery] { margin-block: 20px; }
+  [data-gallery-image] :global(figure) { width: min(100%, 300px); }
+  .gallery-controls { display: flex; flex-wrap: wrap; gap: 5px 15px; margin-top: 10px; }
+  .gallery-button { min-height: 44px; border: 0; border-bottom: 1px solid transparent; padding: 0; background: transparent; }
+  .gallery-button[aria-pressed="true"] { border-color: currentColor; color: var(--color-accent-hishat); }
+  @media (min-width: 960px) {
+    .catalogue-intro { grid-template-columns: 1fr 1fr; }
+    .catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import EditorialPhoto from './EditorialPhoto.astro';
+
+interface Props {
+  id: string;
+  label: string;
+  title: string;
+  photo: string;
+  alt: string;
+  accent?: boolean;
+}
+const { id, label, title, photo, alt, accent = false } = Astro.props;
+---
+<section id={id} class:list={['chapter', { accent }]} data-section aria-labelledby={id + '-heading'}>
+  <div class="chapter-copy">
+    <p class="eyebrow">{label}</p>
+    <h2 id={id + '-heading'}>{title}</h2>
+    <slot />
+  </div>
+  <EditorialPhoto photo={photo} alt={alt} />
+</section>
+
+<style>
+  .chapter { display: grid; background: var(--collection); }
+  .chapter > :global(figure) { aspect-ratio: 4 / 5; }
+  .chapter-copy { padding: clamp(48px, 12vw, 110px) var(--gutter); min-width: 0; }
+  h2 { margin: .4em 0 .45em; max-width: 13ch; font-size: var(--chapter-title); line-height: 1; letter-spacing: -.065em; font-weight: 450; }
+  .chapter-copy :global(p:not(.eyebrow)) { max-width: 41ch; }
+  .chapter-copy :global(.text-action) { margin-top: 28px; }
+  .accent { background: var(--color-accent-hishat); color: #fff; }
+  .accent .eyebrow { color: #f6e3e3; }
+  .accent .chapter-copy { grid-row: 2; }
+  .accent .chapter-copy :global(.text-action) { color: var(--ink); background: var(--header); border: 0; padding: 12px 20px; border-radius: 100px; }
+  .accent .chapter-copy :global(.text-action:hover) { background: #eeeae6; }
+  .accent :global(:focus-visible) { outline-color: #fff; }
+  @media (min-width: 960px) {
+    .chapter { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: clamp(580px, 68vw, 1150px); }
+    .chapter-copy { align-self: center; padding-block: 70px; }
+    .chapter > :global(figure) { aspect-ratio: auto; }
+    .accent { grid-template-columns: minmax(0, 56fr) minmax(0, 44fr); min-height: clamp(660px, 84vw, 1320px); }
+    .accent .chapter-copy { grid-column: 2; grid-row: 1; }
+    .accent > :global(figure) { grid-column: 1; grid-row: 1; }
+  }
+</style>

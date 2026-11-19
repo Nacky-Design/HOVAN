@@ -1,0 +1,81 @@
+---
+import Arrow from './Arrow.astro';
+import EditorialPhoto from './EditorialPhoto.astro';
+import Service from './Service.astro';
+---
+<section id="materials" class="materials page-gutter" data-section aria-labelledby="materials-title">
+  <div class="material-intro">
+    <div>
+      <p class="eyebrow">Материал / форма / посадка</p>
+      <h2 class="chapter-title" id="materials-title">Смысл виден в самой вещи.</h2>
+    </div>
+    <p class="muted">Выразительность HOVAN рождается из конструкции, ткани и посадки. Важны детали, которые хочется рассмотреть ближе.</p>
+  </div>
+  <div class="material-photos">
+    <EditorialPhoto photo="vortan-1" alt="Высокий ворот и линия плеча" />
+    <EditorialPhoto photo="kami-detail" alt="Манжета светлой блузы крупным планом" />
+  </div>
+  <dl>
+    <div><dt class="eyebrow">Форма</dt><dd>Высокий ворот, длинные линии, мягкий объём и движение ткани.</dd></div>
+    <div><dt class="eyebrow">Материал и уход</dt><dd>Состав и рекомендации для каждого изделия уточняются.</dd></div>
+    <div><dt class="eyebrow">Посадка</dt><dd>Силуэт должен работать на человеке, а не только на фотографии.</dd></div>
+  </dl>
+</section>
+
+<Service />
+
+<section id="editorial" class="editorial" data-section aria-labelledby="editorial-title">
+  <EditorialPhoto photo="pause" alt="Профиль модели в чёрном платье" />
+  <div class="editorial-copy page-gutter">
+    <h2 class="chapter-title" id="editorial-title">Одна капсула.<br />Несколько состояний.</h2>
+    <a class="text-action" href="#looks">Смотреть образы <Arrow /></a>
+  </div>
+</section>
+
+<section id="choose" class="choose page-gutter" data-section aria-labelledby="choose-title">
+  <div>
+    <p class="eyebrow">KAMI / HOVAN</p>
+    <h2 class="chapter-title" id="choose-title">Выберите свою вещь из KAMI.</h2>
+    <p>Начните с коллекции, соберите образ или обсудите размер и посадку перед покупкой.</p>
+  </div>
+  <div class="choose-actions">
+    <a class="pill" href="#catalog">Смотреть коллекцию</a>
+    <button class="pill outline" type="button" data-dialog-open="service-fitting" aria-haspopup="dialog">Записаться на примерку</button>
+    <button class="text-action" type="button" data-dialog-open="service-question" aria-haspopup="dialog">Задать вопрос о размере <Arrow /></button>
+  </div>
+</section>
+
+<style>
+  .materials { background: #fff; padding-block: var(--chapter-space); }
+  .material-intro { display: grid; gap: 24px; align-items: end; }
+  .material-intro .chapter-title { max-width: 13ch; }
+  .material-intro > p { max-width: 43ch; }
+  .material-photos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(8px, 1.4vw, 20px); margin-block: 34px; }
+  .material-photos :global(figure) { aspect-ratio: 3 / 4; }
+  dl { display: grid; gap: 18px; margin: 0; }
+  dl div { border-top: 1px solid var(--rule); padding-top: 15px; }
+  dd { margin: 8px 0 0; max-width: 34ch; }
+  .editorial { position: relative; display: grid; min-height: clamp(430px, 132vw, 820px); background: var(--collection); }
+  .editorial :global(.photo) { position: absolute; inset: 0; }
+  .editorial :global(img) { object-position: 50% 40%; }
+  .editorial :global(figure.placeholder) { padding-bottom: 40%; }
+  .editorial-copy { z-index: 1; display: flex; flex-wrap: wrap; align-items: end; align-content: end; justify-content: space-between; gap: 16px; padding-block: 38px; color: #fff; background: linear-gradient(transparent 42%, #181716dc); }
+  .editorial-copy .chapter-title { max-width: 15ch; }
+  .choose { display: grid; gap: 30px; padding-block: var(--chapter-space); background: var(--ink); color: white; }
+  .choose .eyebrow { color: #dcbabd; }
+  .choose p:not(.eyebrow) { max-width: 42ch; margin-top: 20px; }
+  .choose-actions { display: grid; gap: 12px; }
+  .choose .pill { background: white; color: var(--ink); border-color: white; }
+  .choose .outline { background: transparent; color: white; border-color: #b1a9a4; }
+  .choose :global(:focus-visible), .editorial :global(:focus-visible) { outline-color: #fff; }
+  @media (min-width: 960px) {
+    .material-intro { grid-template-columns: 1fr 1fr; }
+    .material-photos :global(figure) { aspect-ratio: 1 / 1; }
+    dl { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .editorial { min-height: clamp(610px, 67vw, 1000px); }
+    .editorial :global(img) { object-position: 50% 26%; }
+    .editorial-copy { padding-bottom: clamp(44px, 6vw, 120px); }
+    .choose { grid-template-columns: minmax(0, 60fr) minmax(0, 40fr); align-items: center; }
+    .choose-actions { width: min(100%, 370px); justify-self: end; }
+  }
+</style>

@@ -11,17 +11,35 @@ interface Props {
   detailPhoto: string;
   detailAlt: string;
   details: string[];
+  candidate?: { id: string; label: string };
 }
-const { number, title, description, photo, alt, detailPhoto, detailAlt, details } = Astro.props;
+const { number, title, description, photo, alt, detailPhoto, detailAlt, details, candidate } = Astro.props;
 const id = 'look-' + number;
 ---
 <article class:list={['look', { reversed: number === '02' }]} aria-labelledby={id + '-heading'}>
-  <EditorialPhoto photo={photo} alt={alt} />
+  <div class="look-media">
+    <EditorialPhoto photo={photo} alt={alt} />
+    <button type="button" class="photo-action pill" data-dialog-open={id} aria-haspopup="dialog" aria-label={'В образе — образ ' + number}>
+      В образе <Arrow />
+    </button>
+  </div>
   <div class="look-copy">
     <div>
       <p class="eyebrow">Образ / {number}</p>
-      <h3 id={id + '-heading'}>{title.map(line => <span>{line}</span>)}</h3>
+      <h3 id={id + '-heading'}>{title.map(line => <span>{line}{' '}</span>)}</h3>
       <p class="description">{description}</p>
+    </div>
+    <div class="look-details">
+      <p class="eyebrow">Детали образа</p>
+      <ul>
+        {details.map(detail => (
+          <li>
+            <button type="button" class="detail-row" data-dialog-open={id} data-look-open-detail={detail} aria-haspopup="dialog">
+              {detail} <Arrow />
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
     <div class="look-action">
       <button type="button" data-dialog-open={id} aria-haspopup="dialog" aria-label={'В образе — образ ' + number}>
@@ -40,10 +58,12 @@ const id = 'look-' + number;
         <ul aria-label="Детали на фотографии">
           {details.map(detail => <li>{detail}</li>)}
         </ul>
+        {candidate && <button type="button" class="text-action candidate" data-dialog-open={'product-' + candidate.id} aria-haspopup="dialog">{candidate.label} <Arrow /><span class="visually-hidden">, предварительная привязка</span></button>}
         <button type="button" class="pill" data-look-detail>Быстрый просмотр <Arrow /></button>
       </div>
       <div class="quick-view" data-look-view hidden>
         <h3 tabindex="-1">Быстрый просмотр</h3>
+        <p class="muted" data-look-context hidden></p>
         <EditorialPhoto photo={detailPhoto} alt={detailAlt} />
         <button type="button" class="back" data-look-back><span aria-hidden="true">←</span> К образу</button>
       </div>
@@ -53,10 +73,17 @@ const id = 'look-' + number;
 
 <style>
   .look { display: grid; background: var(--look); }
-  .reversed { background: #eae3df; }
-  .look-copy { display: flex; flex-direction: column; justify-content: center; gap: clamp(28px, 4vw, 58px); padding: clamp(32px, 7vw, 76px) var(--gutter); min-width: 0; }
+  .look-copy { display: flex; flex-direction: column; justify-content: space-between; gap: clamp(28px, 4vw, 58px); padding: clamp(32px, 7vw, 76px) var(--gutter); min-width: 0; }
   .look-copy h3 { margin-block: .42em .33em; font-size: clamp(2rem, 9.5vw, 3.15rem); line-height: .99; letter-spacing: -.058em; font-weight: 430; }
   .look-copy h3 span { display: block; }
+  .reversed .look-copy h3 span { display: inline; }
+  .look-media { position: relative; display: grid; min-width: 0; }
+  .photo-action.pill { position: absolute; left: var(--gutter); bottom: 20px; width: auto; background: var(--header); color: var(--ink); border-color: var(--header); }
+  .look-details ul { margin: 12px 0 0; }
+  .look-details li { padding: 0; }
+  .detail-row { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 12px 0; border: 0; background: transparent; text-align: left; }
+  .detail-row:hover { color: var(--color-accent-hishat); }
+  .look-action { display: none; }
   .description, .status { color: var(--muted); max-width: 34ch; }
   .look-action button { width: 100%; padding: 14px 0; min-height: 49px; border: 0; border-block: 1px solid var(--rule); background: transparent; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; }
   .look-action button:hover, .back:hover { color: var(--color-accent-hishat); }
@@ -71,17 +98,20 @@ const id = 'look-' + number;
   ul { list-style: none; padding: 0; margin: 22px 0; border-top: 1px solid var(--rule); }
   li { padding: 13px 0; border-bottom: 1px solid var(--rule); }
   .pill { gap: 12px; width: 100%; }
+  .candidate { margin-bottom: 10px; }
   .quick-view { display: grid; gap: 16px; justify-items: start; }
   .quick-view :global(figure) { width: 100%; aspect-ratio: 4 / 3; }
   .quick-view h3 { font-weight: 500; }
   @media (min-width: 960px) {
-    .look { grid-template-columns: minmax(0, 61fr) minmax(0, 39fr); min-height: clamp(620px, 63vw, 1060px); }
-    .reversed { grid-template-columns: minmax(0, 39fr) minmax(0, 61fr); min-height: clamp(500px, 52vw, 920px); }
+    .look { grid-template-columns: minmax(0, 67fr) minmax(0, 33fr); min-height: clamp(650px, 69.45vw, 1120px); }
+    .reversed { grid-template-columns: minmax(0, 33fr) minmax(0, 67fr); }
     .reversed .look-copy { grid-column: 1; grid-row: 1; }
-    .reversed > :global(figure) { grid-column: 2; grid-row: 1; }
-    .look-copy { padding: clamp(54px, 6vw, 110px) var(--gutter); }
-    .look-action { max-width: 24rem; }
-    .look-copy h3 { font-size: clamp(2.2rem, 4.4vw, 6rem); }
+    .reversed .look-media { grid-column: 2; grid-row: 1; }
+    .look-copy { padding: clamp(52px, 6vw, 100px) clamp(28px, 3.2vw, 65px); }
+    .look-action { display: block; }
+    .photo-action.pill { display: none; }
+    .look-copy h3 { font-size: clamp(2.25rem, 4.45vw, 6rem); }
+    .reversed .look-copy h3 span { display: block; }
     dialog { height: 100dvh; max-height: 100dvh; margin: 0 0 0 auto; border-radius: 0; }
   }
 </style>

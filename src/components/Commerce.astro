@@ -1,0 +1,35 @@
+---
+import Arrow from './Arrow.astro';
+import Panel from './Panel.astro';
+import { products } from '../data/catalog';
+
+const sections = [
+  { kind: 'wish', title: 'Избранное', empty: 'В избранном пока пусто.' },
+  { kind: 'cart', title: 'Корзина', empty: 'Корзина пока пуста.' },
+];
+const candidates = products.filter(product => product.photos.length);
+---
+{sections.map(({ kind, title, empty }) => (
+  <Panel id={'demo-' + kind} title={title}>
+    <p class="muted">Демонстрационный режим. Заказы не оформляются.</p>
+    <div data-demo-list={kind}>
+      <p class="empty" data-demo-empty>{empty}</p>
+      <ul>
+        {candidates.map(product => (
+          <li data-demo-item={product.id} hidden>
+            <span><strong>{product.name}</strong><br />{product.type}</span>
+            <button type="button" class="text-action" data-demo-remove={kind} data-product-id={product.id} aria-label={'Убрать ' + product.name}>Убрать</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <a class="pill" href="#catalog" data-dialog-link>Смотреть коллекцию <Arrow /></a>
+  </Panel>
+))}
+
+<style>
+  .empty { margin: 24px 0; }
+  ul { list-style: none; padding: 0; margin: 20px 0; }
+  li { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--rule); padding: 12px 0; }
+  .pill { gap: 12px; }
+</style>

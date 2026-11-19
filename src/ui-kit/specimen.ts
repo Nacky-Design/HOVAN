@@ -113,7 +113,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-photo-mode]').forEach(button
   });
 });
 // Standalone HTML never requests private media. Local server opts in explicitly.
-if (location.protocol.startsWith('http') && ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
+if (import.meta.env.DEV && location.protocol.startsWith('http') && ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
   fetch('/__local-media/manifest', { cache: 'no-store' }).then(response => response.ok ? response.json() : null).then((media: LocalMedia | null) => {
     if (!media) return;
     localMedia = media;

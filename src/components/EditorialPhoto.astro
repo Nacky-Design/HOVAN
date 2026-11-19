@@ -3,31 +3,40 @@ interface Props {
   photo: string;
   alt: string;
   eager?: boolean;
+  missing?: boolean;
+  format?: 'thumbnail' | 'gallery';
 }
-const { photo, alt, eager = false } = Astro.props;
-const showPhoto = import.meta.env.DEV && Boolean(process.env.HOVAN_LOCAL_PHOTO_ROOT);
+const { photo, alt, eager = false, missing = false, format } = Astro.props;
+const smallFrame = photo === 'contrast' || photo === 'brand';
+const showPhoto = import.meta.env.DEV && Boolean(process.env.HOVAN_LOCAL_PHOTO_ROOT && process.env.HOVAN_LOCAL_PHOTO_MAP) && !missing;
 ---
-<figure class:list={['photo', photo]} aria-hidden={showPhoto ? undefined : 'true'}>
-  {showPhoto && <img src={'/__p1b-photo/' + photo} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />}
+<figure class:list={['photo', photo, format, { placeholder: !showPhoto }]}>
+  {showPhoto
+    ? <img src={'/__p1b-photo/' + photo} alt={alt} width={smallFrame ? 1200 : 1467} height={smallFrame ? 1800 : 2200} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />
+    : <figcaption>{missing ? 'Фото готовится' : 'Фото в закрытом просмотре'}</figcaption>}
 </figure>
 
 <style>
   .photo { position: relative; overflow: hidden; background: #e5e2dd; min-width: 0; min-height: 0; }
   img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 44%; display: block; }
-  .hero { aspect-ratio: 0.85; background: #fefefe; }
-  .hero img { object-position: 50% 44%; }
-  .kami { aspect-ratio: .65; background: #f0f0f0; }
-  .kami img { object-position: 50% 44%; }
-  .movement { aspect-ratio: 1 / 1.11; }
-  .movement img { object-position: 50% 72%; }
-  .sash { aspect-ratio: 1; background: #292522; }
-  .sash img { object-position: 50% 51%; }
+  .hero { aspect-ratio: .85; background: #fefefe; }
+  .kami { aspect-ratio: .625; background: #f0f0f0; }
+  .contrast, .sash { aspect-ratio: .63; }
+  .contrast img { object-position: 50% 45%; }
+  .sash img { object-position: 50% 43%; }
   .detail { aspect-ratio: 4 / 3; }
+  .placeholder { display: grid; place-items: center; padding: 10px; background: #eae7e2; }
+  figcaption { color: var(--muted); text-align: center; font-size: .875rem; }
+  .photo.thumbnail { width: 56px; aspect-ratio: 4 / 5; padding: 0; }
+  .thumbnail figcaption { font-size: .75rem; }
+  .photo.gallery { aspect-ratio: 3 / 4; }
+  .photo.gallery:not(.placeholder) { background: #f7f7f7; }
+  .gallery img { object-fit: contain; object-position: center; }
   @media (min-width: 960px) {
-    .hero, .kami, .movement, .sash { aspect-ratio: auto; }
-    .hero img { object-fit: contain; object-position: 53% bottom; }
-    .kami img { object-position: 50% 26%; }
-    .movement img { object-position: 50% 73%; }
-    .sash img { object-position: 50% 51%; }
+    .hero, .kami, .contrast, .sash { aspect-ratio: auto; }
+    .hero img { width: 90%; left: 5%; object-position: 50% 56%; }
+    .kami img { object-position: 50% 40%; }
+    .contrast img { object-position: 50% 46%; }
+    .sash img { object-position: 50% 46%; }
   }
 </style>

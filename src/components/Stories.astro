@@ -1,0 +1,54 @@
+---
+import Arrow from './Arrow.astro';
+import Catalogue from './Catalogue.astro';
+import EditorialPhoto from './EditorialPhoto.astro';
+import Panel from './Panel.astro';
+import StoryChapter from './StoryChapter.astro';
+---
+<StoryChapter id="hishat" label="HISHAT / Память" title="Память становится частью вещи." photo="detail" alt="Узорный кушак на чёрной ткани" accent>
+  <p>Орнамент, цвет и материал HISHAT соединяют современный силуэт с личной и культурной памятью.</p>
+  <button type="button" class="text-action" aria-haspopup="dialog" data-dialog-open="hishat-story">Открыть историю HISHAT <Arrow /></button>
+</StoryChapter>
+<Panel id="hishat-story" title="История HISHAT" mode="story">
+  <div class="story-content">
+    <p>Память становится частью вещи.</p>
+    <EditorialPhoto photo="hishat-textile" alt="Орнамент и фактура кушака HISHAT крупным планом" format="gallery" />
+    <p>Орнамент, цвет и материал HISHAT соединяют современный силуэт с личной и культурной памятью.</p>
+    <a class="text-action" href="#catalog" data-dialog-link>Все вещи коллекции <Arrow /></a>
+  </div>
+</Panel>
+
+<section id="kami-story" class="kami-story page-gutter" data-section aria-labelledby="kami-story-title">
+  <div>
+    <p class="eyebrow">Коллекция KAMI</p>
+    <h2 class="chapter-title" id="kami-story-title">Как появилась KAMI</h2>
+    <p class="muted">Авторский текст готовится.</p>
+  </div>
+  <EditorialPhoto photo="kami-detail" alt="Манжета светлой блузы крупным планом" />
+</section>
+
+<Catalogue />
+
+<StoryChapter id="brand" label="История HOVAN" title="HOVAN начинается с личной памяти." photo="brand" alt="Деталь чёрной одежды с бордовой вставкой">
+  <p>Современная одежда, в которой память становится частью формы.</p>
+  <button type="button" class="text-action" aria-haspopup="dialog" data-dialog-open="brand-story">Читать полную историю <Arrow /></button>
+</StoryChapter>
+<Panel id="brand-story" title="История HOVAN" mode="story">
+  <div class="story-content">
+    <p>HOVAN начинается с личной памяти.</p>
+    <EditorialPhoto photo="brand" alt="Деталь чёрной одежды с бордовой вставкой" format="gallery" />
+    <p class="muted">Полный текст готовится к публикации.</p>
+  </div>
+</Panel>
+
+<style>
+  .kami-story { display: grid; gap: 28px; align-items: center; background: var(--header); padding-block: clamp(48px, 8vw, 104px); }
+  .kami-story p + h2 { max-width: 12ch; }
+  .kami-story .muted { margin-top: 20px; }
+  .kami-story :global(figure) { aspect-ratio: 4 / 3; }
+  .story-content { display: grid; gap: 22px; }
+  .story-content :global(figure) { width: min(100%, 530px); aspect-ratio: 4 / 3; }
+  @media (min-width: 960px) {
+    .kami-story { grid-template-columns: 1fr 1fr; gap: 48px; }
+  }
+</style>
